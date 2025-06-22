@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from 'react';
-import { createClient } from '../../utils/supabase/client';
+// A CORREÇÃO ESTÁ AQUI: O caminho agora é o correto
+import { createClient } from '../utils/supabase/client';
 
 // O formulário agora recebe a lista de empresas e empreendimentos
 export default function FuncionarioForm({ companies, empreendimentos }) {
@@ -96,17 +97,15 @@ export default function FuncionarioForm({ companies, empreendimentos }) {
         <div className="border-b border-gray-900/10 pb-6">
           <h2 className="text-xl font-semibold text-gray-800">Dados Pessoais</h2>
           <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-6">
-            <div className="md:col-span-2"><label htmlFor="full_name" className="block text-sm font-medium text-gray-700">Nome Completo</label><input type="text" name="full_name" value={formData.full_name} onChange={handleChange} required className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
-            <div><label htmlFor="cpf" className="block text-sm font-medium text-gray-700">CPF</label><input type="text" name="cpf" value={formData.cpf} onChange={handleChange} required className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
-            <div><label htmlFor="rg" className="block text-sm font-medium text-gray-700">RG</label><input type="text" name="rg" value={formData.rg} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
-            <div><label htmlFor="birth_date" className="block text-sm font-medium text-gray-700">Data de Nascimento</label><input type="date" name="birth_date" value={formData.birth_date} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
-            <div><label htmlFor="phone" className="block text-sm font-medium text-gray-700">Telefone</label><input type="text" name="phone" value={formData.phone} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
-            <div className="md:col-span-3"><label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label><input type="email" name="email" value={formData.email} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+            <div className="md:col-span-2"><label htmlFor="full_name" className="block text-sm font-medium text-gray-700">Nome Completo</label><input type="text" name="full_name" id="full_name" value={formData.full_name} onChange={handleChange} required className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+            <div><label htmlFor="cpf" className="block text-sm font-medium text-gray-700">CPF</label><input type="text" name="cpf" id="cpf" value={formData.cpf} onChange={handleChange} required className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+            <div><label htmlFor="rg" className="block text-sm font-medium text-gray-700">RG</label><input type="text" name="rg" id="rg" value={formData.rg} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+            <div><label htmlFor="birth_date" className="block text-sm font-medium text-gray-700">Data de Nascimento</label><input type="date" name="birth_date" id="birth_date" value={formData.birth_date} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+            <div><label htmlFor="phone" className="block text-sm font-medium text-gray-700">Telefone</label><input type="text" name="phone" id="phone" value={formData.phone} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+            <div className="md:col-span-3"><label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label><input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
           </div>
         </div>
-
-        {/* Adicione outras seções para Endereço, Dados Contratuais, etc. se desejar, seguindo o mesmo padrão */}
-
+        
         {/* Botões de Ação */}
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
