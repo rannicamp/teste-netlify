@@ -1,17 +1,16 @@
 "use client";
 
 import Link from 'next/link';
-// Não precisamos mais importar ícones
 
-// Dentro do componente Sidebar, substitua o array navItems por este:
-
-const navItems = [
-  { href: '/', label: 'Dashboard' },
-  { href: '/empresas/cadastro', label: 'Empresas' },
-  { href: '/empreendimentos/cadastro', label: 'Empreendimentos' },
-  { href: '/funcionarios/cadastro', label: 'Funcionários' },
-  { href: '/atividades', label: 'Atividades' }, // Este link ainda não tem uma página, podemos criar depois
-];
+const Sidebar = () => {
+  // Array com os itens e os links corrigidos
+  const navItems = [
+    { href: '/', label: 'Dashboard' },
+    { href: '/empresas/cadastro', label: 'Cadastro de Empresa' },
+    { href: '/empreendimentos/cadastro', label: 'Cadastro de Empreendimento' },
+    { href: '/funcionarios/cadastro', label: 'Cadastro de Funcionário' },
+    { href: '/atividades', label: 'Atividades' }, // Este link ainda não tem uma página, podemos criar depois
+  ];
 
   return (
     <aside className="bg-white shadow-lg w-[260px] h-full fixed left-0 top-0 z-20">
@@ -22,7 +21,6 @@ const navItems = [
         <ul>
           {navItems.map((item) => (
             <li key={item.href}>
-              {/* O ícone foi removido, deixamos um padding para alinhar */}
               <Link href={item.href} className="flex items-center p-4 pl-6 text-gray-700 hover:bg-gray-100">
                 <span className="text-base font-medium">{item.label}</span>
               </Link>
