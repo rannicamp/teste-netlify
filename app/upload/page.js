@@ -11,16 +11,14 @@ export default function UploadPage() {
   const [description, setDescription] = useState('');
   const [message, setMessage] = useState('');
 
-  // Função que lida com a seleção do arquivo
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files.length > 0) {
       setFile(event.target.files[0]);
     }
   };
 
-  // Função chamada quando o formulário é enviado
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Impede o recarregamento da página
+    event.preventDefault();
 
     if (!file) {
       setMessage('Por favor, selecione um arquivo para enviar.');
@@ -29,12 +27,23 @@ export default function UploadPage() {
 
     setMessage('Enviando arquivo...');
 
-    // 1. Envia o arquivo para o Supabase Storage
+    // --- INÍCIO DA LÓGICA DE RENOMEAR ---
+
+    // 1. Pega a extensão do arquivo original (ex: "png", "jpg")
+    const fileExtension = file.name.split('.').pop();
+    // 2. Cria um nome de arquivo novo e único usando o tempo atual em milissegundos
+    const newFileName = `${Date.now()}.${fileExtension}`;
+    // 3. Define o caminho completo onde o arquivo será salvo no bucket
+    const filePath = `public/${newFileName}`;
+
+    // --- FIM DA LÓGICA DE RENOMEAR ---
+
+    // 1. Envia o arquivo para o Supabase Storage com o NOVO NOME
     const { data: fileData, error: fileError } = await supabase.storage
-      .from('marca') // Nome do seu bucket
-      .upload(`public/${file.name}`, file, {
+      .from('marca')
+      .upload(filePath, file, { // Usando o novo filePath
         cacheControl: '3600',
-        upsert: false, // Não substitui o arquivo se já existir
+        upsert: false,
       });
 
     if (fileError) {
@@ -43,13 +52,13 @@ export default function UploadPage() {
       return;
     }
 
-    // 2. Se o upload do arquivo deu certo, salva a descrição no banco de dados
+    // 2. Salva a referência no banco de dados com o NOVO CAMINHO
     const { error: dbError } = await supabase
-      .from('marcas_uploads') // Nome da nossa tabela de rastreamento
+      .from('marcas_uploads')
       .insert([
         {
           descricao: description,
-          caminho_arquivo: fileData.path, // Salva o caminho do arquivo retornado pelo Storage
+          caminho_arquivo: fileData.path, // Usando o caminho retornado pelo Storage
         },
       ]);
     
@@ -60,11 +69,11 @@ export default function UploadPage() {
         setMessage('Upload e cadastro realizados com sucesso!');
         setFile(null);
         setDescription('');
-        // Limpa o input de arquivo
         document.getElementById('file-input').value = "";
     }
   };
 
+  // O restante do código (JSX do formulário) continua exatamente o mesmo
   const inputStyle = { display: 'block', width: '300px', padding: '8px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '4px' };
   const labelStyle = { display: 'block', marginBottom: '5px', fontWeight: 'bold' };
 
@@ -73,17 +82,11 @@ export default function UploadPage() {
       <Link href="/" style={{ color: 'blue' }}>&larr; Voltar para a página inicial</Link>
       <h1 style={{ textAlign: 'center' }}>Upload de Arquivo de Marca</h1>
       <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: '0 auto' }}>
-        
         <label htmlFor="description" style={labelStyle}>Descrição</label>
         <input id="description" type="text" value={description} onChange={(e) => setDescription(e.target.value)} required style={inputStyle} />
-        
         <label htmlFor="file-input" style={labelStyle}>Arquivo</label>
         <input id="file-input" type="file" onChange={handleFileChange} accept="image/*" style={inputStyle} />
-
-        <button type="submit" style={{ ...inputStyle, backgroundColor: '#0070f3', color: 'white', fontWeight: 'bold', cursor: 'pointer' }}>
-          Enviar Arquivo
-        </button>
-
+        <button type="submit" style={{ ...inputStyle, backgroundColor: '#0070f3', color: 'white', fontWeight: 'bold', cursor: 'pointer' }}>Enviar Arquivo</button>
         {message && <p style={{ marginTop: '15px', textAlign: 'center', fontWeight: 'bold' }}>{message}</p>}
       </form>
     </main>
