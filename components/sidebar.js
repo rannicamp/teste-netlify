@@ -3,14 +3,15 @@
 import Link from 'next/link';
 // Não precisamos mais importar ícones
 
-const Sidebar = () => {
-  const navItems = [
-    { href: '/', label: 'Dashboard' },
-    { href: '/empresas', label: 'Empresas' },
-    { href: '/empreendimentos', label: 'Empreendimentos' },
-    { href: '/funcionarios', label: 'Funcionários' },
-    { href: '/atividades', label: 'Atividades' },
-  ];
+// Dentro do componente Sidebar, substitua o array navItems por este:
+
+const navItems = [
+  { href: '/', label: 'Dashboard' },
+  { href: '/empresas/cadastro', label: 'Empresas' },
+  { href: '/empreendimentos/cadastro', label: 'Empreendimentos' },
+  { href: '/funcionarios/cadastro', label: 'Funcionários' },
+  { href: '/atividades', label: 'Atividades' }, // Este link ainda não tem uma página, podemos criar depois
+];
 
   return (
     <aside className="bg-white shadow-lg w-[260px] h-full fixed left-0 top-0 z-20">
