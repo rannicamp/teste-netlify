@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from 'react';
-import { createClient } from '../../utils/supabase/client';
+// A CORREÇÃO ESTÁ AQUI: O caminho agora é '../utils/supabase/client'
+import { createClient } from '../utils/supabase/client';
 
 // O componente agora recebe a lista de empresas como uma "propriedade"
 export default function EmpreendimentoForm({ companies }) {
@@ -89,14 +90,14 @@ export default function EmpreendimentoForm({ companies }) {
             {/* Nome do Empreendimento */}
             <div className="md:col-span-2">
               <label htmlFor="nome" className="block text-sm font-medium text-gray-700">Nome do Empreendimento</label>
-              <input type="text" name="nome" value={formData.nome} onChange={handleChange} required className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+              <input type="text" name="nome" id="nome" value={formData.nome} onChange={handleChange} required className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" />
             </div>
 
             {/* Outros campos... */}
-            <div><label htmlFor="data_inicio" className="block text-sm font-medium text-gray-700">Data de Início</label><input type="date" name="data_inicio" value={formData.data_inicio} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
-            <div><label htmlFor="data_fim_prevista" className="block text-sm font-medium text-gray-700">Data de Fim Prevista</label><input type="date" name="data_fim_prevista" value={formData.data_fim_prevista} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
-            <div><label htmlFor="valor_total" className="block text-sm font-medium text-gray-700">Valor Total</label><input type="text" name="valor_total" value={formData.valor_total} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
-            <div><label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label><input type="text" name="status" value={formData.status} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+            <div><label htmlFor="data_inicio" className="block text-sm font-medium text-gray-700">Data de Início</label><input type="date" name="data_inicio" id="data_inicio" value={formData.data_inicio} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+            <div><label htmlFor="data_fim_prevista" className="block text-sm font-medium text-gray-700">Data de Fim Prevista</label><input type="date" name="data_fim_prevista" id="data_fim_prevista" value={formData.data_fim_prevista} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+            <div><label htmlFor="valor_total" className="block text-sm font-medium text-gray-700">Valor Total</label><input type="text" name="valor_total" id="valor_total" value={formData.valor_total} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+            <div><label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label><input type="text" name="status" id="status" value={formData.status} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
           </div>
         </div>
         
