@@ -1,3 +1,4 @@
+// rannicamp/teste-netlify/teste-netlify-1f74408eafb3943aeb9eb92a02aecae60eaac333/components/sidebar.js
 "use client";
 
 import Link from 'next/link';
@@ -9,7 +10,8 @@ const Sidebar = () => {
     { href: '/empresas/cadastro', label: 'Cadastro de Empresa' },
     { href: '/empreendimentos/cadastro', label: 'Cadastro de Empreendimento' },
     { href: '/funcionarios/cadastro', label: 'Cadastro de Funcionário' },
-    { href: '/atividades', label: 'Painel de Atividades' }, // Link e texto atualizados
+    { href: '/atividades', label: 'Painel de Atividades' },
+    { href: '/rdo', label: 'Diário de Obra (RDO)' }, // NOVO LINK AQUI
   ];
 
   return (
