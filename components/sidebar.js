@@ -2,13 +2,15 @@
 
 import Link from 'next/link';
 
-const navItems = [
-  { href: '/', label: 'Dashboard' },
-  { href: '/empresas/cadastro', label: 'Cadastro de Empresa' },
-  { href: '/empreendimentos/cadastro', label: 'Cadastro de Empreendimento' },
-  { href: '/funcionarios/cadastro', label: 'Cadastro de Funcionário' },
-  { href: '/atividades', label: 'Painel de Atividades' }, // Link e texto atualizados
-];
+const Sidebar = () => {
+  // Array com os itens e os links corrigidos
+  const navItems = [
+    { href: '/', label: 'Dashboard' },
+    { href: '/empresas/cadastro', label: 'Cadastro de Empresa' },
+    { href: '/empreendimentos/cadastro', label: 'Cadastro de Empreendimento' },
+    { href: '/funcionarios/cadastro', label: 'Cadastro de Funcionário' },
+    { href: '/atividades', label: 'Painel de Atividades' }, // Link e texto atualizados
+  ];
 
   return (
     <aside className="bg-white shadow-lg w-[260px] h-full fixed left-0 top-0 z-20">
