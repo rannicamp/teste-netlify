@@ -7,14 +7,13 @@ import { createClient } from '../utils/supabase/client';
 function addBusinessDays(startDate, days) {
   if (!startDate || isNaN(days)) return '';
   
-  let currentDate = new Date(startDate.replace(/-/g, '/')); // Corrige problema de fuso horário
+  let currentDate = new Date(startDate.replace(/-/g, '/'));
   let remainingDays = parseFloat(days);
 
   while (remainingDays > 0) {
     currentDate.setDate(currentDate.getDate() + 1);
     const dayOfWeek = currentDate.getDay();
-    if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Pula Sábado (6) e Domingo (0)
-        // Se for meio dia, não precisamos verificar o dia todo
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
         if (remainingDays < 1) {
             remainingDays = 0;
         } else {
@@ -22,10 +21,8 @@ function addBusinessDays(startDate, days) {
         }
     }
   }
-  // Formata a data para YYYY-MM-DD
   return currentDate.toISOString().split('T')[0];
 }
-
 
 export default function AtividadeModal({ isOpen, onClose, selectedEmpreendimento, existingActivities, onActivityAdded }) {
   const supabase = createClient();
@@ -41,7 +38,7 @@ export default function AtividadeModal({ isOpen, onClose, selectedEmpreendimento
 
   const [formData, setFormData] = useState({
     nome: '',
-    tipo_atividade: categories[0], // 'categoria'
+    tipo_atividade: categories[0],
     data_inicio_prevista: '',
     duracao_dias: 0,
     dependencies: null,
@@ -49,7 +46,6 @@ export default function AtividadeModal({ isOpen, onClose, selectedEmpreendimento
   
   const [message, setMessage] = useState('');
 
-  // Calcula a data final automaticamente
   const dataFimPrevista = useMemo(() => {
     return addBusinessDays(formData.data_inicio_prevista, formData.duracao_dias);
   }, [formData.data_inicio_prevista, formData.duracao_dias]);
@@ -64,7 +60,11 @@ export default function AtividadeModal({ isOpen, onClose, selectedEmpreendimento
     setMessage('Salvando...');
 
     const dadosParaSalvar = {
-      ...formData,
+      nome: formData.nome,
+      tipo_atividade: formData.tipo_atividade,
+      data_inicio_prevista: formData.data_inicio_prevista,
+      duracao_dias: formData.duracao_dias,
+      dependencies: formData.dependencies,
       data_fim_prevista: dataFimPrevista,
       empreendimento_id: selectedEmpreendimento.id,
       empresa_id: selectedEmpreendimento.empresa_proprietaria_id,

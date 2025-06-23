@@ -12,8 +12,8 @@ export default function ActivityList({ activities }) {
                         <p className="text-sm text-gray-600">Categoria: {activity.tipo_atividade}</p>
                         <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
                             <span>Status: {activity.status}</span>
-                            <span>Início: {activity.data_inicio_prevista}</span>
-                            <span>Fim: {activity.data_fim_prevista}</span>
+                            <span>Início: {activity.data_inicio_prevista || 'N/A'}</span>
+                            <span>Fim: {activity.data_fim_prevista || 'N/A'}</span>
                         </div>
                     </li>
                 ))}

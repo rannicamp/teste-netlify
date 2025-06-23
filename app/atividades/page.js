@@ -77,7 +77,6 @@ export default function AtividadesPage() {
                 </button>
                 {!isListCollapsed && <ActivityList activities={activities} />}
             </div>
-            {/* Placeholder for Gantt Chart */}
             <div className="bg-white p-4 rounded-lg shadow">
                 <h2 className="font-bold text-xl">Gráfico de Gantt (Fase 2)</h2>
             </div>
