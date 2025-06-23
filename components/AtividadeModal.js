@@ -3,26 +3,35 @@
 import { useState, useEffect, useMemo } from 'react';
 import { createClient } from '../utils/supabase/client';
 
-// Função auxiliar para adicionar dias úteis a uma data
+// Função auxiliar para adicionar dias úteis a uma data, AGORA CORRIGIDA
 function addBusinessDays(startDate, days) {
-  if (!startDate || isNaN(days)) return '';
-  
-  let currentDate = new Date(startDate.replace(/-/g, '/'));
-  let remainingDays = parseFloat(days);
+  if (!startDate || isNaN(days) || days <= 0) {
+    return startDate || '';
+  }
 
-  while (remainingDays > 0) {
+  let currentDate = new Date(startDate.replace(/-/g, '/')); // Corrige problema de fuso horário
+  
+  // A duração inclui o dia de início, então adicionamos 'duração - 1' dias úteis.
+  // Usamos Math.ceil para tratar os casos de meio dia (ex: 4.5 dias)
+  let daysToAdd = Math.ceil(parseFloat(days)) - 1;
+  
+  // Se a duração for menor que 1 (ex: 0.5), a tarefa termina no mesmo dia.
+  if (daysToAdd < 0) {
+    return startDate;
+  }
+  
+  while (daysToAdd > 0) {
     currentDate.setDate(currentDate.getDate() + 1);
     const dayOfWeek = currentDate.getDay();
+    // Pula Sábado (6) e Domingo (0)
     if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-        if (remainingDays < 1) {
-            remainingDays = 0;
-        } else {
-            remainingDays--;
-        }
+      daysToAdd--;
     }
   }
+  // Formata a data para YYYY-MM-DD
   return currentDate.toISOString().split('T')[0];
 }
+
 
 export default function AtividadeModal({ isOpen, onClose, selectedEmpreendimento, existingActivities, onActivityAdded }) {
   const supabase = createClient();
@@ -46,6 +55,7 @@ export default function AtividadeModal({ isOpen, onClose, selectedEmpreendimento
   
   const [message, setMessage] = useState('');
 
+  // O cálculo agora usará a nova função corrigida
   const dataFimPrevista = useMemo(() => {
     return addBusinessDays(formData.data_inicio_prevista, formData.duracao_dias);
   }, [formData.data_inicio_prevista, formData.duracao_dias]);

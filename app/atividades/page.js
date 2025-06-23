@@ -4,21 +4,30 @@ import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '../../utils/supabase/client';
 import AtividadeModal from '../../components/AtividadeModal';
 import ActivityList from '../../components/ActivityList';
+// import GanttChart from '../../components/GanttChart'; // Removido o import do GanttChart
 
 export default function AtividadesPage() {
   const supabase = createClient();
-
   const [empreendimentos, setEmpreendimentos] = useState([]);
   const [selectedEmpreendimento, setSelectedEmpreendimento] = useState(null);
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isListCollapsed, setIsListCollapsed] = useState(false);
+  // const [isGanttCollapsed, setIsGanttCollapsed] = useState(false); // Removido o estado do Gantt
+  const [sortConfig, setSortConfig] = useState({ key: 'data_inicio_prevista', direction: 'ascending' });
+
 
   const fetchInitialData = useCallback(async () => {
-    const { data: empreendimentosData } = await supabase.from('empreendimentos').select('id, nome, empresa_proprietaria_id').order('nome');
-    setEmpreendimentos(empreendimentosData || []);
-    setLoading(false);
+    try {
+      const { data: empreendimentosData, error } = await supabase.from('empreendimentos').select('id, nome, empresa_proprietaria_id').order('nome');
+      if (error) {
+        console.error("Erro ao buscar empreendimentos:", error);
+      }
+      setEmpreendimentos(empreendimentosData || []);
+    } finally {
+      setLoading(false);
+    }
   }, [supabase]);
 
   useEffect(() => {
@@ -30,7 +39,10 @@ export default function AtividadesPage() {
       setActivities([]);
       return;
     }
-    const { data } = await supabase.from('activities').select('*').eq('empreendimento_id', empreendimentoId).order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('activities').select('*').eq('empreendimento_id', empreendimentoId).order('data_inicio_prevista');
+    if (error) {
+        console.error("Erro ao buscar atividades:", error);
+    }
     setActivities(data || []);
   }, [supabase]);
   
@@ -45,6 +57,26 @@ export default function AtividadesPage() {
         setActivities([]);
     }
   };
+
+    const sortActivities = useCallback((key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+
+        const sorted = [...activities].sort((a, b) => {
+            if (a[key] === null || a[key] === undefined) return direction === 'ascending' ? 1 : -1;
+            if (b[key] === null || b[key] === undefined) return direction === 'ascending' ? -1 : 1;
+
+            if (typeof a[key] === 'string' && typeof b[key] === 'string') {
+                return direction === 'ascending' ? a[key].localeCompare(b[key]) : b[key].localeCompare(a[key]);
+            }
+            return direction === 'ascending' ? a[key] - b[key] : b[key] - a[key];
+        });
+        setActivities(sorted);
+    }, [activities, sortConfig]);
+
 
   if (loading) {
     return <p className="text-center mt-10">Carregando dados...</p>;
@@ -75,11 +107,19 @@ export default function AtividadesPage() {
                     <span>Lista de Atividades</span>
                     <span>{isListCollapsed ? '►' : '▼'}</span>
                 </button>
-                {!isListCollapsed && <ActivityList activities={activities} />}
+                {!isListCollapsed && <ActivityList activities={activities} requestSort={sortActivities} sortConfig={sortConfig} />}
             </div>
-            <div className="bg-white p-4 rounded-lg shadow">
-                <h2 className="font-bold text-xl">Gráfico de Gantt (Fase 2)</h2>
+            
+            {/* O bloco do Gráfico de Gantt foi removido */}
+            {/*
+            <div className="bg-white rounded-lg shadow">
+                <button onClick={() => setIsGanttCollapsed(!isGanttCollapsed)} className="font-bold text-xl p-4 w-full text-left flex justify-between items-center">
+                    <span>Gráfico de Gantt</span>
+                    <span>{isGanttCollapsed ? '►' : '▼'}</span>
+                </button>
+                {!isGanttCollapsed && <GanttChart activities={activities} />}
             </div>
+            */}
         </>
       )}
 
